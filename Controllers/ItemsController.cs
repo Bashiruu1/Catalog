@@ -17,18 +17,17 @@ namespace Catalog.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ItemDto> GetItems()
+        public async Task<IEnumerable<ItemDto>> GetItems()
         {
-            var items = repository.GetItems().Select(item => item.AsDto());
-
+            var items = (await repository.GetItemsAsync()).Select(item => item.AsDto());
             return items;
         }
 
         //Get /items/{id}
         [HttpGet("{id}")]
-        public ActionResult<ItemDto> GetItem(Guid id)
+        public async Task<ActionResult<ItemDto>> GetItemAsync(Guid id)
         {
-            var item = repository.GetItem(id);
+            var item = await repository.GetItemAsync(id);
 
             if(item is null) {
                 return NotFound();
@@ -38,7 +37,7 @@ namespace Catalog.Controllers
 
         // POST /items
         [HttpPost]
-        public ActionResult<ItemDto> CreateItem(CreateitemDto itemDto)
+        public async Task<ActionResult<ItemDto>> CreateItemAsync(CreateitemDto itemDto)
         {
             Item item = new()
             {
@@ -48,17 +47,17 @@ namespace Catalog.Controllers
                 CreatedDate = DateTimeOffset.UtcNow
             };
 
-            repository.CreateItem(item);
+            await repository.CreateItemAsync(item);
 
             //Get Information of Item, Id of route, object to be returned 
-            return CreatedAtAction(nameof(GetItem), new { Id = item.Id }, item.AsDto());
+            return CreatedAtAction(nameof(GetItemAsync), new { Id = item.Id }, item.AsDto());
         }
 
         // PUT/ items/{id}
         [HttpPut("{id}")]
-        public ActionResult UpdateItem(Guid id, UpdateItemDto itemDto)
+        public async Task<ActionResult> UpdateItem(Guid id, UpdateItemDto itemDto)
         {
-            var exstingItem = repository.GetItem(id);
+            var exstingItem = await repository.GetItemAsync(id);
             if (exstingItem is null)
             {
                 return NotFound();
@@ -70,22 +69,22 @@ namespace Catalog.Controllers
                 Price = itemDto.Price
             };
 
-            repository.UpdateItem(UpdatedItem);
+            await repository.UpdateItemAsync(UpdatedItem);
 
             return NoContent();
         }
 
         /// DELETE/ items/{id}
         [HttpDelete("{id}")]
-        public ActionResult DeleteItem(Guid id)
+        public async Task<ActionResult> DeleteItem(Guid id)
         {
-            var exstingItem = repository.GetItem(id);
+            var exstingItem = await repository.GetItemAsync(id);
             if (exstingItem is null)
             {
                 return NotFound();
             }
 
-            repository.DeleteItem(exstingItem);
+            await repository.DeleteItemAsync(exstingItem);
 
             return NoContent();
         }
