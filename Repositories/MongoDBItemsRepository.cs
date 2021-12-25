@@ -35,7 +35,6 @@ namespace Catalog.Repositories
 
         public async Task<IEnumerable<Item>> GetItemsAsync()
         {
-            throw new NotImplementedException();
             return await itemsCollection.Find(new BsonDocument()).ToListAsync();
         }
 
