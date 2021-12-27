@@ -9,6 +9,11 @@
     }
   },
   "profiles": {
+    "dotnet": {
+      "commandName": "Project",
+      "hotReloadProfile": "aspnetcore",
+      "hotReloadEnabled": true
+    },
     "Catalog": {
       "commandName": "Project",
       "dotnetRunMessages": true,

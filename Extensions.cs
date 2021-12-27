@@ -11,15 +11,14 @@ namespace Catalog
 {   
     public static class Extensions
     {
-        public static WebApplicationBuilder SetupApplicationSingletons(this WebApplicationBuilder builder)
+        public static WebApplicationBuilder SetupApplicationSingletons(this WebApplicationBuilder builder, string ConnectionString)
         {     
             BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));     
             BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));     
               
             builder.Services.AddSingleton<IMongoClient>(ServiceProvider => 
             {
-                var settings = builder.Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-                return new MongoClient(settings.ConnectionString);
+                return new MongoClient(ConnectionString);
             });
             builder.Services.AddSingleton<IItemsRepository, MongoDBItemsRepository>();
             return builder;
