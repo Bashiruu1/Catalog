@@ -6,8 +6,6 @@ namespace Catalog.Settings
         public int Port { get; set; }
         public string User { get; set; }
         public string Password { get; set; }
-        public TimeSpan TimeoutLimit { get; init; } = TimeSpan.FromSeconds(3);
-        public string MongoDBName { get; init; } = "mongodb";
 
         public string ConnectionString 
         { 

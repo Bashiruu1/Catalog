@@ -20,8 +20,8 @@ builder.SetupApplicationSingletons(mongoDbSettings.ConnectionString);
 builder.Services.AddHealthChecks()
     .AddMongoDb(
         mongoDbSettings.ConnectionString, 
-        name: mongoDbSettings.MongoDBName, 
-        timeout: mongoDbSettings.TimeoutLimit,
+        name: "mongodb", 
+        timeout: TimeSpan.FromSeconds(3),
         tags: new[] { "ready" });
 
 var app = builder.Build();
@@ -33,7 +33,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if(app.Environment.IsDevelopment()) 
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthorization();
 
