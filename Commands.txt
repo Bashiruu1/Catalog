@@ -14,3 +14,20 @@ docker push namsudb/catalog:v1
 
 docker rmi namsudb/catalog:v1
 docker rmi catalog:v1
+
+
+
+
+kubectl config current-context
+kubectl create secret generic catalog-secrets --from-literal=mongodb-password='TakeAGuess?'
+kubectl apply -f .\catalog.yaml
+kubectl apply -f .\mongodb.yaml
+kubectl get deployments
+kubectl get pods
+kubectl logs catalog-deployment-6847d68f97-z8kgc (Pod Name)
+kubectl get statefulsets
+kubectl get pods -w
+kubectl delete pod catalog-deployment-6847d68f97-z8kgc
+kubectl delete pod mongodb-statefulset-0 
+kubectl scale deployments/catalog-deployment --replicas=3
+kubectl logs <pod name> -f
