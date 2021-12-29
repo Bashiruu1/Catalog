@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Catalog.Api.Controllers;
 using Catalog.Api.Dtos;
@@ -50,12 +51,16 @@ public class ItemsControllerTests
         var result = await controller.GetItemAsync(Guid.NewGuid());
 
         // Assert
-        result.GetObjectResult().Should().BeEquivalentTo(expectedItem);
+        var obj = result.GetObjectResult();
+        obj.Should().BeEquivalentTo(
+            expectedItem,
+            options => options.ComparingByMembers<Item>());
+
         //result.Value.Should().BeEquivalentTo(expectedItem);
     }
 
     [Fact]
-    public async Task GetItemsAsync_WithExistingItem_ReturnsAllItems()
+    public async Task GetItemsAsync_WithExistingItems_ReturnsAllItems()
     {
         // Arrange
         var expectedItems = new[] { CreateRandomItem(), CreateRandomItem(), CreateRandomItem(), CreateRandomItem() };
@@ -69,21 +74,45 @@ public class ItemsControllerTests
         var result = await controller.GetItemsAsync();
 
         // Assert
-        result.Should().BeEquivalentTo(
-            expectedItems,
-            options => options.ComparingByMembers<Item>()
+        result.Should().BeEquivalentTo(expectedItems);
+    }
+
+    [Fact]
+    public async Task GetItemsAsync_WithMatchingItems_ReturnsMatchingItems()
+    {
+        // Arrange
+        var allItems = new[] 
+        { 
+            new Item(){ Name = "Potion"},
+            new Item(){ Name = "Antidote"},
+            new Item(){ Name = "Hi-Potion"}, 
+        };
+
+        var nameToMatch = "Potion";
+
+        repositoryStub.Setup(repo => repo.GetItemsAsync())
+            .ReturnsAsync(allItems);
+
+        var controller = new ItemsController(repositoryStub.Object, loggerStub.Object);
+
+        // Act
+        IEnumerable<ItemDto> foundItems = await controller.GetItemsAsync(nameToMatch);
+
+        // Assert
+        foundItems.Should().OnlyContain(
+            item => item.Name == allItems[0].Name || item.Name == allItems[2].Name
         );
     }
+
 
     [Fact]
     public async Task CreateItemAsync_WithItemToCreate_ReturnsCreatedItem()
     {
         // Arrange
-        var itemToCreate = new CreateitemDto()
-        {
-            Name = Guid.NewGuid().ToString(),
-            Price = rand.Next(1000)
-        };
+        var itemToCreate = new CreateItemDto(
+            Guid.NewGuid().ToString(), 
+            Guid.NewGuid().ToString(), 
+            rand.Next(1000));
 
         var controller = new ItemsController(repositoryStub.Object, loggerStub.Object);
 
@@ -110,11 +139,11 @@ public class ItemsControllerTests
             .ReturnsAsync(existingItem);
         
         var itemId = existingItem.Id;
-        var itemToUpdate = new UpdateItemDto()
-        {
-            Name = Guid.NewGuid().ToString(),
-            Price = rand.Next(1000)
-        };
+        var itemToUpdate = new UpdateItemDto(
+            Guid.NewGuid().ToString(), 
+            Guid.NewGuid().ToString(), 
+            rand.Next(1000)
+        );
 
         var controller = new ItemsController(repositoryStub.Object, loggerStub.Object);
 
@@ -149,6 +178,7 @@ public class ItemsControllerTests
         {
             Id = Guid.NewGuid(),
             Name = Guid.NewGuid().ToString(),
+            Description = Guid.NewGuid().ToString(),
             Price = rand.Next(1000),
             CreatedDate = DateTimeOffset.UtcNow
         };

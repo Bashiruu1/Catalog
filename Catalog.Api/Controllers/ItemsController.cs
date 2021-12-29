@@ -23,11 +23,17 @@ namespace Catalog.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ItemDto>> GetItemsAsync()
+        public async Task<IEnumerable<ItemDto>> GetItemsAsync(string name = null)
         {
             var items = (await repository.GetItemsAsync()).Select(item => item.AsDto());
 
+            if(!string.IsNullOrWhiteSpace(name))
+            {
+                items.Where(item => item.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
+            }
+
             logger.LogInformation($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Retrieved {items.Count()} items");
+            
             return items;
         }
 
@@ -45,12 +51,13 @@ namespace Catalog.Api.Controllers
 
         // POST /items
         [HttpPost]
-        public async Task<ActionResult<ItemDto>> CreateItemAsync(CreateitemDto itemDto)
+        public async Task<ActionResult<ItemDto>> CreateItemAsync(CreateItemDto itemDto)
         {
             Item item = new()
             {
                 Id = Guid.NewGuid(),
                 Name = itemDto.Name,
+                Description = itemDto.Description,
                 Price = itemDto.Price,
                 CreatedDate = DateTimeOffset.UtcNow
             };
@@ -71,13 +78,11 @@ namespace Catalog.Api.Controllers
                 return NotFound();
             }
 
-            Item UpdatedItem = exstingItem with
-            {
-                Name = itemDto.Name,
-                Price = itemDto.Price
-            };
-
-            await repository.UpdateItemAsync(UpdatedItem);
+            exstingItem.Name = itemDto.Name;
+            exstingItem.Description = itemDto.Description;
+            exstingItem.Price = itemDto.Price;
+            
+            await repository.UpdateItemAsync(exstingItem);
 
             return NoContent();
         }

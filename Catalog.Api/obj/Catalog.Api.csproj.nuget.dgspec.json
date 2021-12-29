@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\source\\repos\\Catalog\\Catalog.Api\\Catalog.Api.csproj": {}
+    "D:\\source\\repos\\Catalog\\Catalog.Api\\Catalog.Api.csproj": {}
   },
   "projects": {
-    "d:\\source\\repos\\Catalog\\Catalog.Api\\Catalog.Api.csproj": {
+    "D:\\source\\repos\\Catalog\\Catalog.Api\\Catalog.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\source\\repos\\Catalog\\Catalog.Api\\Catalog.Api.csproj",
+        "projectUniqueName": "D:\\source\\repos\\Catalog\\Catalog.Api\\Catalog.Api.csproj",
         "projectName": "Catalog.Api",
-        "projectPath": "d:\\source\\repos\\Catalog\\Catalog.Api\\Catalog.Api.csproj",
+        "projectPath": "D:\\source\\repos\\Catalog\\Catalog.Api\\Catalog.Api.csproj",
         "packagesPath": "C:\\Users\\Usman\\.nuget\\packages\\",
-        "outputPath": "d:\\source\\repos\\Catalog\\Catalog.Api\\obj\\",
+        "outputPath": "D:\\source\\repos\\Catalog\\Catalog.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Usman\\AppData\\Roaming\\NuGet\\NuGet.Config",
