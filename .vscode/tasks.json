@@ -7,7 +7,7 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/Catalog.csproj",
+        "${workspaceFolder}/build.proj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
@@ -23,7 +23,7 @@
       "type": "process",
       "args": [
         "publish",
-        "${workspaceFolder}/Catalog.csproj",
+        "${workspaceFolder}/Catalog.Api/Catalog.Api.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
@@ -36,7 +36,7 @@
       "args": [
         "watch",
         "run",
-        "${workspaceFolder}/Catalog.csproj",
+        "${workspaceFolder}/Catalog.Api/Catalog.Api.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
@@ -54,7 +54,7 @@
         "pull": true
       },
       "netCore": {
-        "appProject": "${workspaceFolder}/Catalog.csproj"
+        "appProject": "${workspaceFolder}/Catalog.Api/Catalog.Api.csproj"
       }
     },
     {
@@ -68,7 +68,7 @@
         "pull": true
       },
       "netCore": {
-        "appProject": "${workspaceFolder}/Catalog.csproj"
+        "appProject": "${workspaceFolder}/Catalog.Api/Catalog.Api.csproj"
       }
     },
     {
@@ -77,7 +77,7 @@
       "dependsOn": ["docker-build: debug"],
       "dockerRun": {},
       "netCore": {
-        "appProject": "${workspaceFolder}/Catalog.csproj",
+        "appProject": "${workspaceFolder}/Catalog.Api/Catalog.Api.csproj",
         "enableDebugging": true,
         "configureSsl": false
       }
@@ -88,7 +88,7 @@
       "dependsOn": ["docker-build: release"],
       "dockerRun": {},
       "netCore": {
-        "appProject": "${workspaceFolder}/Catalog.csproj"
+        "appProject": "${workspaceFolder}/Catalog.Api/Catalog.Api.csproj"
       }
     }
   ]
